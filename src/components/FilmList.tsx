@@ -20,13 +20,13 @@ const FilmList = ({ films, activeIndex, onFilmClick }: FilmListProps) => {
             onClick={() => onFilmClick(index)}
             className={`block text-left transition-all duration-300 hover:opacity-100 ${
               index === activeIndex 
-                ? 'opacity-100 text-white text-4xl md:text-5xl lg:text-6xl font-bold' 
-                : 'opacity-60 text-white/60 text-xl md:text-2xl hover:text-white/80'
+                ? 'opacity-100 text-white text-6xl md:text-7xl lg:text-8xl font-bold' 
+                : 'opacity-60 text-white/60 text-2xl md:text-3xl hover:text-white/80'
             }`}
           >
             <div className="flex items-baseline gap-4">
               <span className="font-serif leading-tight">{film.title}</span>
-              <span className="text-base md:text-lg font-light opacity-75">{film.year}</span>
+              <span className="text-lg md:text-xl lg:text-2xl font-light opacity-75">{film.year}</span>
             </div>
           </button>
         ))}
