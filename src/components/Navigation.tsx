@@ -11,7 +11,7 @@ const Navigation = () => {
       </button>
       
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <h1 className="text-2xl font-bold tracking-wider">A24</h1>
+        <h1 className="text-2xl font-bold tracking-wider">Muhammed Shahed</h1>
       </div>
       
       <button>

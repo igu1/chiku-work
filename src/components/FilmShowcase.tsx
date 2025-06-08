@@ -1,59 +1,45 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { Tables } from '@/integrations/supabase/types';
 import FilmList from './FilmList';
 
-const films = [
-  {
-    id: 1,
-    title: "Bring Her Back",
-    year: "2025",
-    image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-  },
-  {
-    id: 2,
-    title: "Friendship",
-    year: "2025", 
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-  },
-  {
-    id: 3,
-    title: "Materialists",
-    year: "2025",
-    image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-  },
-  {
-    id: 4,
-    title: "Sorry, Baby",
-    year: "2025",
-    image: "https://images.unsplash.com/photo-1494790108755-2616c3e0a9f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-  },
-  {
-    id: 5,
-    title: "Eddington",
-    year: "2025",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-  },
-  {
-    id: 6,
-    title: "The Smashing Machine",
-    year: "2025",
-    image: "https://images.unsplash.com/photo-1509281373149-e957c6296406?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-  }
-];
+type Film = Tables<'films'>;
 
 const FilmShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // Fetch films from Supabase
+  const { data: films = [], isLoading } = useQuery({
+    queryKey: ['films'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('films')
+        .select('*')
+        .order('created_at', { ascending: true });
+      
+      if (error) {
+        console.error('Error fetching films:', error);
+        throw error;
+      }
+      
+      return data;
+    },
+  });
+
   // Auto-advance slides every 5 seconds
   useEffect(() => {
+    if (films.length === 0) return;
+    
     const interval = setInterval(() => {
       handleFilmChange((activeIndex + 1) % films.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [activeIndex]);
+  }, [activeIndex, films.length]);
 
   const handleFilmChange = (index: number) => {
     if (index === activeIndex) return;
@@ -64,6 +50,22 @@ const FilmShowcase = () => {
       setIsTransitioning(false);
     }, 150);
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-lg">Loading films...</div>
+      </div>
+    );
+  }
+
+  if (films.length === 0) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-lg">No films available</div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-black">
@@ -77,7 +79,7 @@ const FilmShowcase = () => {
         >
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${film.image})` }}
+            style={{ backgroundImage: `url(${film.image_url})` }}
           />
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />

@@ -1,12 +1,8 @@
 
 import React from 'react';
+import { Tables } from '@/integrations/supabase/types';
 
-interface Film {
-  id: number;
-  title: string;
-  year: string;
-  image: string;
-}
+type Film = Tables<'films'>;
 
 interface FilmListProps {
   films: Film[];
