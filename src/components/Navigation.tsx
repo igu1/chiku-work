@@ -10,8 +10,25 @@ const Navigation = () => {
         MENU
       </button> */}
       
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <h1 className="text-3xl mt-3 font-bold tracking-wider" style={{ fontFamily: "'Dancing Script', cursive" }}>Muhammed Shahed</h1>
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+        {
+          [
+            // { name: "Muhammed Shahed", font: "'Pacifico', cursive" },
+            // { name: "Creative Coder", font: "'Dancing Script', cursive" },
+            // { name: "Web Innovator", font: "'Great Vibes', cursive" },
+            // { name: "Digital Artist", font: "'Allura', cursive" },
+            // { name: "Tech Enthusiast", font: "'Sacramento', cursive" },
+            // { name: "Code Whisperer", font: "'Caveat', cursive" },
+            // { name: "Pixel Perfect", font: "'Indie Flower', cursive" },
+            // { name: "Design Thinker", font: "'Shadows Into Light', cursive" },
+            // { name: "Solution Architect", font: "'Permanent Marker', cursive" },
+            { name: "Muhammed Shahed", font: "'Architects Daughter', cursive" },
+          ].map((item, index) => (
+            <h1 key={index} className="text-4xl mt-5 font-bold tracking-wider" style={{ fontFamily: item.font }}>
+              {item.name}
+            </h1>
+          ))
+        }
       </div>
       
     </nav>
